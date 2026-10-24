@@ -1,0 +1,7 @@
+# Publish only the project source and its release metadata.
+*
+!/.gitignore
+!/LICENSE
+!/README.md
+!/requirements.txt
+!/v3.py
