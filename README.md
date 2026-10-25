@@ -32,6 +32,20 @@ Internet. L'audio n'est pas intentionnellement enregistré. Le flux RSS
 partenaire par défaut nécessite une connexion Internet ; le fonctionnement
 audio local reste destiné au réseau local.
 
+## Recompiler depuis les sources
+
+Le code source et les fichiers nécessaires au build sont disponibles dans ce
+dépôt. Sur Windows 64 bits, avec Python installé et `py` disponible dans le
+terminal, exécute :
+
+```bat
+py -m pip install -r requirements-build.txt
+build_v6.bat
+```
+
+L'exécutable reconstruit est créé dans `dist\Miclon.exe`. Le fichier
+`V6.spec` inclut les pages et ressources utilisées par l'application.
+
 ## License
 
 This project is distributed under the MIT License. See [LICENSE](./LICENSE).
@@ -66,6 +80,20 @@ This is a local-network utility; do not expose or forward these ports to the
 internet. Audio is not intentionally recorded. The default partner RSS feed
 requires an internet connection; local audio operation is intended for the
 local network.
+
+## Rebuild from source
+
+The source code and build files are available in this repository. On 64-bit
+Windows, with Python installed and the `py` launcher available in a terminal,
+run:
+
+```bat
+py -m pip install -r requirements-build.txt
+build_v6.bat
+```
+
+The rebuilt executable is created at `dist\Miclon.exe`. `V6.spec` includes the
+pages and resources used by the application.
 
 ## License
 

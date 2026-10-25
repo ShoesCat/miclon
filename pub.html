@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Publicité Plein Écran</title>
+    <style>
+        /* Supprime les marges et force le conteneur à prendre 100% de l'écran visible */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #000000;
+        }
+
+        /* Conteneur principal qui occupe tout l'espace majeur */
+        .interstitial-ad {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            color: #ffffff;
+            box-sizing: border-box;
+            padding: 40px 20px;
+            text-decoration: none;
+        }
+
+        /* Badge publicitaire obligatoire */
+        .ad-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Bouton de fermeture (Fictif mais indispensable sur ce format) */
+        .close-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 24px;
+            height: 24px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Zone centrale du visuel / de l'illustration */
+        .ad-visual-placeholder {
+            width: 85%;
+            aspect-ratio: 1 / 1;
+            max-height: 40vh;
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            margin-top: 40px;
+        }
+
+        .ad-logo-text {
+            font-size: 24px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Zone des textes descriptifs */
+        .ad-meta {
+            text-align: center;
+            margin-top: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .ad-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .ad-description {
+            font-size: 14px;
+            color: #b0b5c6;
+            line-height: 1.4;
+            max-width: 280px;
+            margin: 0 auto;
+        }
+
+        /* Bouton d'action massif en bas (CTA) */
+        .ad-cta {
+            width: 100%;
+            max-width: 300px;
+            background-color: #00d2c4;
+            color: #16213e;
+            text-align: center;
+            padding: 16px 0;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(0, 210, 196, 0.3);
+            transition: transform 0.2s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- L'intégralité de l'écran est cliquable vers l'offre -->
+    <a href="https://example.com" target="_blank" class="interstitial-ad">
+
+        <span class="ad-badge">Annonce</span>
+
+        <!-- Bouton fermer simulé (sans action pour l'instant) -->
+        <div class="close-button" onclick="event.preventDefault(); alert('Action de fermeture simulée');">✕</div>
+
+        <!-- Visuel principal (Simule une image de produit ou d'application) -->
+        <div class="ad-visual-placeholder">
+            <span class="ad-logo-text">PRODUIT</span>
+        </div>
+
+        <!-- Textes publicitaires -->
+        <div class="ad-meta">
+            <div class="ad-title">Offre Majeure Exclusive</div>
+            <div class="ad-description">Découvrez la nouvelle expérience plein écran conçue pour votre mobile. Installez maintenant.</div>
+        </div>
+
+        <!-- Bouton d'action principal -->
+        <div class="ad-cta">Profiter de l'offre</div>
+
+    </a>
+
+</body>
+</html>
