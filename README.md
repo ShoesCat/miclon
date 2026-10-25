@@ -22,7 +22,7 @@ py -m pip install -r requirements.txt
 Run the program:
 
 ```powershell
-py v3.py
+py miclon.py
 ```
 
 The program prints a local URL and a QR code. Open the URL on the phone, grant
@@ -90,7 +90,7 @@ py -m pip install -r requirements.txt
 Lance le programme :
 
 ```powershell
-py v3.py
+py miclon.py
 ```
 
 Le programme affiche une adresse locale et un code QR. Ouvre l'adresse sur le
