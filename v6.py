@@ -847,6 +847,13 @@ HTML_CONTENT = """
         .settings-panel[hidden] { display: none; }
         .settings-panel .language-picker,
         .settings-panel .filter-control { width: 100%; max-width: none; margin: 12px 0; }
+        .dark-mode-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 16px 0;
+        }
+        .dark-mode-control input { width: 18px; height: 18px; }
         .speaker-monitor-control {
             display: flex;
             align-items: center;
@@ -855,6 +862,48 @@ HTML_CONTENT = """
         }
         .speaker-monitor-control input { width: 18px; height: 18px; }
         #speakerMonitorStatus { min-height: 1em; color: #a00; font-size: 14px; }
+        body.dark-mode {
+            background: #111;
+            color: #f2f2f2;
+        }
+        body.dark-mode .settings-panel {
+            background: #18181b;
+            border-color: #3b3b3b;
+            color: #f2f2f2;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+        }
+        body.dark-mode .pair-pin-label,
+        body.dark-mode .filter-help,
+        body.dark-mode .phone-ad-label,
+        body.dark-mode .phone-ad-slot .rss-feed,
+        body.dark-mode #speakerMonitorStatus,
+        body.dark-mode #languageStatus,
+        body.dark-mode #linkStatus {
+            color: #dfe7ff;
+        }
+        body.dark-mode .phone-ad-slot,
+        body.dark-mode .rss-feed,
+        body.dark-mode .language-buttons button,
+        body.dark-mode .settings-panel .language-buttons button {
+            background: #1e1e1e;
+            color: #f2f2f2;
+        }
+        body.dark-mode .language-buttons button[aria-pressed="true"] {
+            outline-color: #8ab4ff;
+        }
+        body.dark-mode .meter-bar {
+            background: #404040;
+        }
+        body.dark-mode .meter-bar.active { background: #36d67b; }
+        body.dark-mode .meter-bar.active.warning { background: #ffd75a; }
+        body.dark-mode .meter-bar.active.danger { background: #ff6b6b; }
+        body.dark-mode .phone-ad-slot {
+            border-color: #555;
+        }
+        body.dark-mode .rss-feed a { color: #8ab4ff; }
+        body.dark-mode .settings-panel input[type="range"] {
+            accent-color: #8ab4ff;
+        }
         #settingsBtn {
             position: static;
             z-index: 6;
@@ -967,6 +1016,10 @@ HTML_CONTENT = """
             </div>
             <p id="languageStatus" role="status" aria-live="polite"></p>
         </nav>
+        <label class="dark-mode-control" for="darkModeToggle">
+            <input id="darkModeToggle" type="checkbox">
+            <span data-i18n="darkModeLabel">Dark mode</span>
+        </label>
         <label class="speaker-monitor-control" for="speakerMonitor">
             <input id="speakerMonitor" type="checkbox" disabled>
             <span id="speakerMonitorLabel"></span>
@@ -1020,6 +1073,7 @@ HTML_CONTENT = """
                 linkReadError: "Could not read link status: {message}",
                 linkWriteError: "Could not change link status: {message}",
                 levelWaiting: "Microphone level: waiting", meterLabel: "Microphone sound level",
+                darkModeLabel: "Dark mode",
                 filterLabel: "Noise filter", filterAria: "Noise filter strength",
                 filterHelp: "Reduces background noise during silence. Too much filtering can also reduce quiet voices. Set to 0 to disable the filter.",
                 pitchLabel: "Pitch", pitchAria: "Voice pitch",
@@ -1048,6 +1102,7 @@ HTML_CONTENT = """
                 linkReadError: "Impossible de lire l'état de la liaison : {message}",
                 linkWriteError: "Impossible de modifier la liaison : {message}",
                 levelWaiting: "Niveau du micro : en attente", meterLabel: "Niveau sonore du microphone",
+                darkModeLabel: "Mode sombre",
                 filterLabel: "Filtre antiparasite", filterAria: "Intensité du filtre antiparasite",
                 filterHelp: "Réduit le bruit de fond pendant les silences. Une intensité trop forte peut aussi atténuer les voix faibles. Réglez à 0 pour désactiver le filtre.",
                 pitchLabel: "Hauteur", pitchAria: "Hauteur de la voix",
@@ -1561,10 +1616,12 @@ HTML_CONTENT = """
         const levelMeter = document.getElementById('levelMeter');
         const settingsBtn = document.getElementById('settingsBtn');
         const settingsPanel = document.getElementById('settingsPanel');
+        const darkModeToggle = document.getElementById('darkModeToggle');
         const speakerMonitor = document.getElementById('speakerMonitor');
         const speakerMonitorLabel = document.getElementById('speakerMonitorLabel');
         const speakerMonitorStatus = document.getElementById('speakerMonitorStatus');
         const themeColor = document.getElementById('themeColor');
+        const DARK_MODE_STORAGE_KEY = 'miclonDarkMode';
         const noiseFilter = document.getElementById('noiseFilter');
         const noiseFilterValue = document.getElementById('noiseFilterValue');
         let noiseFilterStrength = Number(noiseFilter.value);
@@ -1605,7 +1662,10 @@ HTML_CONTENT = """
         const SESSION_DURATION_MS = 3 * 60 * 60 * 1000;
 
         function t(key, values = {}) {
-            return translations[currentLanguage][key].replace(
+            const locale = translations[currentLanguage] ?? translations.en;
+            const fallback = translations.en ?? {};
+            const text = String(locale[key] ?? fallback[key] ?? key);
+            return text.replace(
                 /\\{(\\w+)\\}/g,
                 (match, name) => String(values[name] ?? match)
             );
@@ -1653,6 +1713,18 @@ HTML_CONTENT = """
             linkStatus.textContent = t(currentLinkStatus.key, currentLinkStatus.values);
             applyMicrophoneLinkState(microphoneLinkEnabled, false);
         }
+
+        function applyDarkMode(enabled) {
+            const shouldUseDarkMode = Boolean(enabled);
+            document.body.classList.toggle("dark-mode", shouldUseDarkMode);
+            darkModeToggle.checked = shouldUseDarkMode;
+            localStorage.setItem(DARK_MODE_STORAGE_KEY, String(shouldUseDarkMode));
+            themeColor.content = shouldUseDarkMode ? "#111111" : "#000000";
+        }
+
+        darkModeToggle.addEventListener('change', () => {
+            applyDarkMode(darkModeToggle.checked);
+        });
 
         async function changeLanguage(language) {
             languageChangeRevision++;
@@ -1724,7 +1796,7 @@ HTML_CONTENT = """
             linkBtn.disabled = false;
             speakerMonitor.disabled = false;
             document.body.classList.add("paired");
-            themeColor.content = "#000000";
+            themeColor.content = document.body.classList.contains("dark-mode") ? "#111111" : "#000000";
             settingsPanel.hidden = true;
             settingsBtn.setAttribute("aria-expanded", "false");
             cancelAnimationFrame(meterAnimationFrame);
@@ -1752,7 +1824,7 @@ HTML_CONTENT = """
             activeAudioTracks.forEach(track => track.stop());
             activeAudioTracks = [];
             document.body.classList.remove("paired");
-            themeColor.content = "#000000";
+            themeColor.content = document.body.classList.contains("dark-mode") ? "#111111" : "#000000";
             pairControls.hidden = false;
             startBtn.hidden = true;
             startBtn.disabled = true;
@@ -1897,6 +1969,7 @@ HTML_CONTENT = """
             }
         });
 
+        applyDarkMode(localStorage.getItem(DARK_MODE_STORAGE_KEY) === "true");
         applyLanguage(currentLanguage);
         loadLanguage();
         restorePairedSession();
@@ -2846,6 +2919,7 @@ class TinyHTTPHandler(http.server.BaseHTTPRequestHandler):
 
         self.send_response(200)
         self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Cache-Control", "no-store")
         self.end_headers()
         ad_config = json.dumps(
             {
