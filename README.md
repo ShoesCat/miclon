@@ -1,7 +1,7 @@
 # Miclon V6
 
 Miclon V6 transforme le microphone d'un téléphone en entrée audio sans fil
-pour un PC Windows. Télécharge [V6.exe](./dist/V6.exe) et lance-le : Python
+pour un PC Windows. Télécharge [Miclon.exe](./dist/Miclon.exe) et lance-le : Python
 n'a pas besoin d'être installé.
 
 ## Prérequis
@@ -14,7 +14,7 @@ n'a pas besoin d'être installé.
 
 ## Utilisation
 
-1. Lance `dist\V6.exe` sur le PC. Autorise l'application dans le pare-feu Windows
+1. Lance `dist\Miclon.exe` sur le PC. Autorise l'application dans le pare-feu Windows
    si nécessaire.
 2. Saisis dans le navigateur du téléphone l'adresse HTTPS et le code PIN
    affichés dans la console du PC, ou scanne le QR code.
@@ -41,7 +41,7 @@ This project is distributed under the MIT License. See [LICENSE](./LICENSE).
 # Miclon V6 (English)
 
 Miclon V6 turns a phone's microphone into wireless audio input for a Windows
-PC. Download [V6.exe](./dist/V6.exe) and run it; Python does not need to be
+PC. Download [Miclon.exe](./dist/Miclon.exe) and run it; Python does not need to be
 installed.
 
 ## Requirements
@@ -54,7 +54,7 @@ installed.
 
 ## Use
 
-1. Run `dist\V6.exe` on the PC. Allow it through Windows Firewall if prompted.
+1. Run `dist\Miclon.exe` on the PC. Allow it through Windows Firewall if prompted.
 2. Enter the HTTPS address and PIN shown in the PC console in the phone's
    browser, or scan the QR code.
 3. Accept the local certificate warning if shown, allow microphone access,
